@@ -1,0 +1,16 @@
+apiVersion : apps/v1beta1
+kind: Deployment
+metadata:
+  name: eshoponcontainers2020 
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: eshoponcontainers2020 
+    spec:
+      containers:
+        - name: eshoponcontainers2020 
+          image: tmp2020.azurecr.io/eshoponcontainers2020
+          ports:
+          - containerPort: 80
