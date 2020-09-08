@@ -33,15 +33,21 @@ stages:
     pool:
       vmImage: $(vmImageName)
     steps:
-    - task: Docker@2
-      displayName: Build and push an image to container registry
+    - task: DockerCompose@0
       inputs:
-        command: buildAndPush
-        repository: $(imageRepository)
-        dockerfile: $(dockerfilePath)
-        containerRegistry: $(dockerRegistryServiceConnection)
-        tags: |
-          $(tag)
+        containerregistrytype: 'Azure Container Registry'
+        azureSubscription: 'Azure subscription 1(1)(bbeb73e1-c85a-4b87-934f-8bed6c3801c1)'
+        azureContainerRegistry: '{"loginServer":"tmp2020.azurecr.io", "id" : "/subscriptions/bbeb73e1-c85a-4b87-934f-8bed6c3801c1/resourceGroups/tmp-2020/providers/Microsoft.ContainerRegistry/registries/tmp2020"}'
+        dockerComposeFile: '**/docker-compose.yml'
+        action: 'Build services'
+        includeLatestTag: true
+    - task: DockerCompose@0
+      inputs:
+        containerregistrytype: 'Azure Container Registry'
+        azureSubscription: 'Azure subscription 1(1)(bbeb73e1-c85a-4b87-934f-8bed6c3801c1)'
+        azureContainerRegistry: '{"loginServer":"tmp2020.azurecr.io", "id" : "/subscriptions/bbeb73e1-c85a-4b87-934f-8bed6c3801c1/resourceGroups/tmp-2020/providers/Microsoft.ContainerRegistry/registries/tmp2020"}'
+        dockerComposeFile: '**/docker-compose.yml'
+        action: 'Push services'
           
     - upload: manifests
       artifact: manifests
