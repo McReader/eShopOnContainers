@@ -16,7 +16,6 @@ variables:
   resourceGroupName: 'tmp-2020'
   imageRepository: 'eshoponcontainers2020'
   containerRegistry: 'tmp2020.azurecr.io'
-  dockerfilePath: '**/Dockerfile'
   tag: '$(Build.BuildId)'
   imagePullSecret: 'tmp2020ea30-auth'
 
@@ -27,32 +26,32 @@ variables:
   k8sNamespaceForPR: 'review-app-$(System.PullRequest.PullRequestId)'
 
 stages:
-- stage: Build
-  displayName: Build stage
-  jobs:  
-  - job: Build
-    displayName: Build
-    pool:
-      vmImage: $(vmImageName)
-    steps:
-    - task: DockerCompose@0
-      inputs:
-        containerregistrytype: 'Azure Container Registry'
-        azureSubscription: 'Azure subscription 1(1)(bbeb73e1-c85a-4b87-934f-8bed6c3801c1)'
-        azureContainerRegistry: '{"loginServer":"tmp2020.azurecr.io", "id" : "/subscriptions/bbeb73e1-c85a-4b87-934f-8bed6c3801c1/resourceGroups/tmp-2020/providers/Microsoft.ContainerRegistry/registries/tmp2020"}'
-        dockerComposeFile: '**/docker-compose.yml'
-        action: 'Build services'
-        includeLatestTag: true
-    - task: DockerCompose@0
-      inputs:
-        containerregistrytype: 'Azure Container Registry'
-        azureSubscription: 'Azure subscription 1(1)(bbeb73e1-c85a-4b87-934f-8bed6c3801c1)'
-        azureContainerRegistry: '{"loginServer":"tmp2020.azurecr.io", "id" : "/subscriptions/bbeb73e1-c85a-4b87-934f-8bed6c3801c1/resourceGroups/tmp-2020/providers/Microsoft.ContainerRegistry/registries/tmp2020"}'
-        dockerComposeFile: '**/docker-compose.yml'
-        action: 'Push services'
+# - stage: Build
+#   displayName: Build stage
+#   jobs:  
+#   - job: Build
+#     displayName: Build
+#     pool:
+#       vmImage: $(vmImageName)
+#     steps:
+#     - task: DockerCompose@0
+#       inputs:
+#         containerregistrytype: 'Azure Container Registry'
+#         azureSubscription: 'Azure subscription 1(1)(bbeb73e1-c85a-4b87-934f-8bed6c3801c1)'
+#         azureContainerRegistry: '{"loginServer":"tmp2020.azurecr.io", "id" : "/subscriptions/bbeb73e1-c85a-4b87-934f-8bed6c3801c1/resourceGroups/tmp-2020/providers/Microsoft.ContainerRegistry/registries/tmp2020"}'
+#         dockerComposeFile: '**/docker-compose.yml'
+#         action: 'Build services'
+#         includeLatestTag: true
+#     - task: DockerCompose@0
+#       inputs:
+#         containerregistrytype: 'Azure Container Registry'
+#         azureSubscription: 'Azure subscription 1(1)(bbeb73e1-c85a-4b87-934f-8bed6c3801c1)'
+#         azureContainerRegistry: '{"loginServer":"tmp2020.azurecr.io", "id" : "/subscriptions/bbeb73e1-c85a-4b87-934f-8bed6c3801c1/resourceGroups/tmp-2020/providers/Microsoft.ContainerRegistry/registries/tmp2020"}'
+#         dockerComposeFile: '**/docker-compose.yml'
+#         action: 'Push services'
           
-    - upload: manifests
-      artifact: manifests
+#     - upload: manifests
+#       artifact: manifests
 
 - stage: Deploy
   displayName: Deploy stage
@@ -71,7 +70,7 @@ stages:
           steps:
           - task: CmdLine@2
             inputs:
-              script: ".\\deploy-all-mac.ps1 -externalDns aks -aksName $(aksClusterName) -aksRg $(resourceGroupName) -imageTag linux-dev -useMesh $false"
+              script: ".\\deploy\\k8s\\helm\\deploy-all-mac.ps1 -externalDns aks -aksName $(aksClusterName) -aksRg $(resourceGroupName) -imageTag linux-dev -useMesh $false"
 
   - deployment: DeployPullRequest
     displayName: Deploy Pull request
