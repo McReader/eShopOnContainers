@@ -12,6 +12,8 @@ variables:
 
   # Container registry service connection established during pipeline creation
   dockerRegistryServiceConnection: '65c3da8b-ea03-4747-8835-8d486862b420'
+  aksClusterName: 'eShopOnContainers'
+  resourceGroupName: 'tmp-2020'
   imageRepository: 'eshoponcontainers2020'
   containerRegistry: 'tmp2020.azurecr.io'
   dockerfilePath: '**/Dockerfile'
@@ -67,24 +69,9 @@ stages:
       runOnce:
         deploy:
           steps:
-          - task: KubernetesManifest@0
-            displayName: Create imagePullSecret
+          - task: CmdLine@2
             inputs:
-              action: createSecret
-              secretName: $(imagePullSecret)
-              dockerRegistryEndpoint: $(dockerRegistryServiceConnection)
-              
-          - task: KubernetesManifest@0
-            displayName: Deploy to Kubernetes cluster
-            inputs:
-              action: deploy
-              manifests: |
-                $(Pipeline.Workspace)/manifests/deployment.yml
-                $(Pipeline.Workspace)/manifests/service.yml
-              imagePullSecrets: |
-                $(imagePullSecret)
-              containers: |
-                $(containerRegistry)/$(imageRepository):$(tag)
+              script: ".\\deploy-all-mac.ps1 -externalDns aks -aksName $(aksClusterName) -aksRg $(resourceGroupName) -imageTag linux-dev -useMesh $false"
 
   - deployment: DeployPullRequest
     displayName: Deploy Pull request
