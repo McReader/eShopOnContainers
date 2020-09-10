@@ -43,16 +43,13 @@ stages:
   dependsOn: Build
 
   jobs:
-  - deployment: Deploy
+  - job: Deploy
     displayName: Deploy
     pool:
       vmImage: $(vmImageName)
-    strategy:
-      runOnce:
-        deploy:
-          steps:
-          - checkout: self
-            path: '~/eShopOnContainers'
-          - task: CmdLine@2
-            inputs:
-              script: "~/eShopOnContainers/deploy/k8s/helm/deploy-all-mac.ps1 -externalDns aks -aksName $(aksClusterName) -aksRg $(resourceGroupName) -imageTag linux-dev -useMesh $false"
+      steps:
+      - checkout: self
+        path: '~/eShopOnContainers'
+      - task: CmdLine@2
+        inputs:
+          script: "~/eShopOnContainers/deploy/k8s/helm/deploy-all-mac.ps1 -externalDns aks -aksName $(aksClusterName) -aksRg $(resourceGroupName) -imageTag linux-dev -useMesh $false"
