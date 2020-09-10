@@ -13,16 +13,11 @@ variables:
   # Agent VM image name
   vmImageName: 'ubuntu-latest'
 
-stages:
-- stage: Deploy
-  displayName: Deploy stage
-
   jobs:
   - deployment: Deploy
     displayName: Deploy
     environment: "Development"
     pool:
       vmImage: $(vmImageName)
-      steps:
-      - script: "s/deploy/k8s/helm/deploy-all-mac.ps1 -externalDns aks -aksName $(aksClusterName) -aksRg $(resourceGroupName) -imageTag linux-dev -useMesh $false"
-        name: Helm deploy
+    steps:
+    - script: "s/deploy/k8s/helm/deploy-all-mac.ps1 -externalDns aks -aksName $(aksClusterName) -aksRg $(resourceGroupName) -imageTag linux-dev -useMesh $false"
