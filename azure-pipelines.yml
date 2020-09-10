@@ -23,8 +23,5 @@ stages:
     pool:
       vmImage: $(vmImageName)
       steps:
-      - checkout: self
-        path: '~/eShopOnContainers'
-      - task: CmdLine@2
-        inputs:
-          script: "~/eShopOnContainers/deploy/k8s/helm/deploy-all-mac.ps1 -externalDns aks -aksName $(aksClusterName) -aksRg $(resourceGroupName) -imageTag linux-dev -useMesh $false"
+      - script: "s/deploy/k8s/helm/deploy-all-mac.ps1 -externalDns aks -aksName $(aksClusterName) -aksRg $(resourceGroupName) -imageTag linux-dev -useMesh $false"
+        name: Helm deploy
