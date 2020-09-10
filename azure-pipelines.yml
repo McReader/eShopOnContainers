@@ -53,24 +53,6 @@ stages:
     - upload: manifests
       artifact: manifests
 
-- stage: Test
-  displayName: Test stage
-
-  jobs:
-  - deployment: Deploy
-    condition: and(succeeded(), not(startsWith(variables['Build.SourceBranch'], 'refs/pull/')))
-    displayName: Test
-    pool:
-      vmImage: $(vmImageName)
-    environment: 'McReadereShopOnContainers.default'
-    strategy:
-      runOnce:
-        deploy:
-          steps:
-          - task: CmdLine@2
-            inputs:
-              script: "ls -a"
-
 - stage: Deploy
   displayName: Deploy stage
   dependsOn: Build
@@ -88,7 +70,7 @@ stages:
           steps:
           - task: CmdLine@2
             inputs:
-              script: ".\\deploy\\k8s\\helm\\deploy-all-mac.ps1 -externalDns aks -aksName $(aksClusterName) -aksRg $(resourceGroupName) -imageTag linux-dev -useMesh $false"
+              script: ".\\eShopOnContainers\\deploy\\k8s\\helm\\deploy-all-mac.ps1 -externalDns aks -aksName $(aksClusterName) -aksRg $(resourceGroupName) -imageTag linux-dev -useMesh $false"
 
   - deployment: DeployPullRequest
     displayName: Deploy Pull request
