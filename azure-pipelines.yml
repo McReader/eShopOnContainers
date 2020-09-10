@@ -30,7 +30,7 @@ stages:
             inputs:
               azureSubscription: 'Azure subscription 1(1)(bbeb73e1-c85a-4b87-934f-8bed6c3801c1)'
               ScriptType: 'InlineScript'
-              Inline: 'az aks show -n $(aksClusterName)  -g $(resourceGroupName) --query addonProfiles.httpApplicationRouting.config.HTTPApplicationRoutingZoneName)'
+              Inline: 'az aks show -n $(aksClusterName)  -g $(resourceGroupName) --query addonProfiles.httpApplicationRouting.config.HTTPApplicationRoutingZoneName'
               FailOnStandardError: true
               azurePowerShellVersion: 'LatestVersion'
           - task: AzurePowerShell@5
