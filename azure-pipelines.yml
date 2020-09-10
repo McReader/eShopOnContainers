@@ -11,7 +11,7 @@ variables:
   resourceGroupName: 'tmp-2020'
   containerRegistry: 'tmp2020.azurecr.io'
   # Agent VM image name
-  vmImageName: 'macos-latest'
+  vmImageName: 'ubuntu-16.04'
 
 stages:
 - stage: Deploy
@@ -27,6 +27,10 @@ stages:
         deploy:      
           steps:
           - checkout: self
+          - task: Docker@2
+            inputs:
+              containerRegistry: 'tmp2020'
+              command: 'login'
           - task: AzurePowerShell@5
             inputs:
               azureSubscription: 'Azure subscription 1(bbeb73e1-c85a-4b87-934f-8bed6c3801c1)'
