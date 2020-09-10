@@ -26,4 +26,5 @@ stages:
       runOnce:
         deploy:      
           steps:
+          - checkout: self
           - script: "s/deploy/k8s/helm/deploy-all-mac.ps1 -externalDns aks -aksName $(aksClusterName) -aksRg $(resourceGroupName) -imageTag linux-dev -useMesh $false"
