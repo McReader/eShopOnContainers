@@ -39,9 +39,6 @@ stages:
         azureContainerRegistry: '{"loginServer":"tmp2020.azurecr.io", "id" : "/subscriptions/bbeb73e1-c85a-4b87-934f-8bed6c3801c1/resourceGroups/tmp-2020/providers/Microsoft.ContainerRegistry/registries/tmp2020"}'
         dockerComposeFile: '**/docker-compose.yml'
         action: 'Push services'
-          
-    - upload: manifests
-      artifact: manifests
 
 - stage: Deploy
   displayName: Deploy stage
@@ -60,4 +57,4 @@ stages:
           steps:
           - task: CmdLine@2
             inputs:
-              script: "/s/deploy/k8s/helm/deploy-all-mac.ps1 -externalDns aks -aksName $(aksClusterName) -aksRg $(resourceGroupName) -imageTag linux-dev -useMesh $false"
+              script: "./s/deploy/k8s/helm/deploy-all-mac.ps1 -externalDns aks -aksName $(aksClusterName) -aksRg $(resourceGroupName) -imageTag linux-dev -useMesh $false"
