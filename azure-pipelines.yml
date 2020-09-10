@@ -11,7 +11,7 @@ variables:
   resourceGroupName: 'tmp-2020'
   containerRegistry: 'tmp2020.azurecr.io'
   # Agent VM image name
-  vmImageName: 'ubuntu-latest'
+  vmImageName: 'macos-latest'
 
 stages:
 - stage: Deploy
