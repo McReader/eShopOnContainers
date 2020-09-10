@@ -27,9 +27,10 @@ stages:
         deploy:      
           steps:
           - checkout: self
-          - task: AzureCLI@2
+          - task: AzurePowerShell@5
             inputs:
               azureSubscription: 'Azure subscription 1(1)(bbeb73e1-c85a-4b87-934f-8bed6c3801c1)'
-              scriptType: 'ps'
-              scriptLocation: 'inlineScript'
-              inlineScript: 'deploy/k8s/helm/deploy-all-mac.ps1 -externalDns aks -aksName $(aksClusterName) -aksRg $(resourceGroupName) -imageTag linux-dev -registry $(containerRegistry) -useMesh $false'
+              ScriptType: 'InlineScript'
+              Inline: 'deploy/k8s/helm/deploy-all-mac.ps1 -externalDns aks -aksName $(aksClusterName) -aksRg $(resourceGroupName) -imageTag linux-dev -registry $(containerRegistry) -useMesh $false'
+              FailOnStandardError: true
+              azurePowerShellVersion: 'LatestVersion'
