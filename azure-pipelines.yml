@@ -5,17 +5,25 @@ resources:
 - repo: self
 
 variables:
-
   # Container registry service connection established during pipeline creation
   dockerRegistryServiceConnection: '65c3da8b-ea03-4747-8835-8d486862b420'
   aksClusterName: 'eShopOnContainers'
   resourceGroupName: 'tmp-2020'
   containerRegistry: 'tmp2020.azurecr.io'
-
   # Agent VM image name
   vmImageName: 'ubuntu-latest'
 
 stages:
+- stage: Checkout
+  displayName: Checkout repository
+  jobs:  
+  - job: Build
+    displayName: Build
+    pool:
+      vmImage: $(vmImageName)
+    steps:
+    - checkout: self
+      path: '/eShopOnContainers'
 - stage: Build
   displayName: Build stage
   jobs:  
@@ -57,4 +65,4 @@ stages:
           steps:
           - task: CmdLine@2
             inputs:
-              script: "./s/deploy/k8s/helm/deploy-all-mac.ps1 -externalDns aks -aksName $(aksClusterName) -aksRg $(resourceGroupName) -imageTag linux-dev -useMesh $false"
+              script: "/eShopOnContainers/deploy/k8s/helm/deploy-all-mac.ps1 -externalDns aks -aksName $(aksClusterName) -aksRg $(resourceGroupName) -imageTag linux-dev -useMesh $false"
