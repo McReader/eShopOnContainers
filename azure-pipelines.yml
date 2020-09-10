@@ -9,7 +9,6 @@ variables:
   dockerRegistryServiceConnection: '65c3da8b-ea03-4747-8835-8d486862b420'
   aksClusterName: 'eShopOnContainers'
   resourceGroupName: 'tmp-2020'
-  containerRegistry: 'tmp2020.azurecr.io'
   # Agent VM image name
   vmImageName: 'ubuntu-16.04'
 
@@ -27,6 +26,13 @@ stages:
         deploy:      
           steps:
           - checkout: self
+          - task: AzurePowerShell@5
+            inputs:
+              azureSubscription: 'Azure subscription 1(1)(bbeb73e1-c85a-4b87-934f-8bed6c3801c1)'
+              ScriptType: 'InlineScript'
+              Inline: 'az aks show -n $(aksClusterName)  -g $(resourceGroupName) --query addonProfiles.httpApplicationRouting.config.HTTPApplicationRoutingZoneName)'
+              FailOnStandardError: true
+              azurePowerShellVersion: 'LatestVersion'
           - task: AzurePowerShell@5
             inputs:
               azureSubscription: 'Azure subscription 1(1)(bbeb73e1-c85a-4b87-934f-8bed6c3801c1)'
