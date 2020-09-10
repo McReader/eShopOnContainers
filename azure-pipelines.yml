@@ -18,8 +18,9 @@ stages:
   displayName: Deploy stage
 
   jobs:
-  - job: Deploy
+  - deployment: Deploy
     displayName: Deploy
+    environment: "Development"
     pool:
       vmImage: $(vmImageName)
       steps:
