@@ -13,6 +13,15 @@ variables:
   vmImageName: 'ubuntu-16.04'
 
 stages:
+- stage: Build
+  displayName: Build stage
+  jobs:
+    - job: Build
+      displayName: Build
+      pool:
+        vmImage: $(vmImageName)
+      steps:
+        
 - stage: Deploy
   displayName: Deploy stage
   jobs:
@@ -26,13 +35,7 @@ stages:
         deploy:      
           steps:
           - checkout: self
-          - task: AzurePowerShell@5
-            inputs:
-              azureSubscription: 'Azure subscription 1(1)(bbeb73e1-c85a-4b87-934f-8bed6c3801c1)'
-              ScriptType: 'InlineScript'
-              Inline: 'az aks show -n $(aksClusterName)  -g $(resourceGroupName) --query addonProfiles.httpApplicationRouting.config.HTTPApplicationRoutingZoneName'
-              FailOnStandardError: true
-              azurePowerShellVersion: 'LatestVersion'
+          - script: 'deploy/k8s/helm/deploy-all.sh -externalDns aks -aksName $(aksClusterName) -aksRg $(resourceGroupName) -imageTag linux-dev -registry $(containerRegistry) -useMesh $false'
           - task: AzurePowerShell@5
             inputs:
               azureSubscription: 'Azure subscription 1(1)(bbeb73e1-c85a-4b87-934f-8bed6c3801c1)'
