@@ -32,7 +32,7 @@ stages:
               azureSubscription: 'Azure subscription 1(bbeb73e1-c85a-4b87-934f-8bed6c3801c1)'
               ScriptType: 'InlineScript'
               Inline: |
-                $AzCred = Get-Credential -UserName <username>
+                $AzCred = Get-Credential -UserName Dzianis_Roi@epam.com
                 az login -u $AzCred.UserName -p $AzCred.GetNetworkCredential().Password
               FailOnStandardError: true
               azurePowerShellVersion: 'LatestVersion'
