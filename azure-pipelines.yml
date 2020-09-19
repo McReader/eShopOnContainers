@@ -29,6 +29,15 @@ stages:
           # - script: 'deploy/k8s/helm/deploy-all.sh -externalDns aks -aksName $(aksClusterName) -aksRg $(resourceGroupName) -imageTag linux-dev -useMesh $false'
           - task: AzurePowerShell@5
             inputs:
+              azureSubscription: 'Azure subscription 1(bbeb73e1-c85a-4b87-934f-8bed6c3801c1)'
+              ScriptType: 'InlineScript'
+              Inline: |
+                $AzCred = Get-Credential -UserName <username>
+                az login -u $AzCred.UserName -p $AzCred.GetNetworkCredential().Password
+              FailOnStandardError: true
+              azurePowerShellVersion: 'LatestVersion'
+          - task: AzurePowerShell@5
+            inputs:
               azureSubscription: 'Azure subscription 1(1)(bbeb73e1-c85a-4b87-934f-8bed6c3801c1)'
               ScriptType: 'InlineScript'
               Inline: 'deploy/k8s/helm/deploy-all-mac.ps1 -externalDns aks -aksName $(aksClusterName) -aksRg $(resourceGroupName) -imageTag linux-dev -registry $(containerRegistry) -useMesh $false'
