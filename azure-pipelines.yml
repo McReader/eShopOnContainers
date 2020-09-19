@@ -27,14 +27,7 @@ stages:
           steps:
           - checkout: self
           # - script: 'deploy/k8s/helm/deploy-all.sh -externalDns aks -aksName $(aksClusterName) -aksRg $(resourceGroupName) -imageTag linux-dev -useMesh $false'
-          - task: AzurePowerShell@5
-            inputs:
-              azureSubscription: 'Azure subscription 1(bbeb73e1-c85a-4b87-934f-8bed6c3801c1)'
-              ScriptType: 'InlineScript'
-              Inline: |
-                az login --identity
-              FailOnStandardError: true
-              azurePowerShellVersion: 'LatestVersion'
+          - script: az login --identity
           - task: AzurePowerShell@5
             inputs:
               azureSubscription: 'Azure subscription 1(1)(bbeb73e1-c85a-4b87-934f-8bed6c3801c1)'
