@@ -5,10 +5,12 @@ resources:
 - repo: self
 
 variables:
-  # Container registry service connection established during pipeline creation
-  dockerRegistryServiceConnection: '65c3da8b-ea03-4747-8835-8d486862b420'
   aksClusterName: 'eShopOnContainers'
   resourceGroupName: 'tmp-2020'
+  
+  servicePrincipalUserName: '787362c4-2617-4e33-81db-133d1cf1bd79'
+  servicePrincipalTenantId: 'b41b72d0-4e9f-4c26-8a69-f949f367c91d'
+  
   # Agent VM image name
   vmImageName: 'ubuntu-16.04'
 
@@ -26,13 +28,12 @@ stages:
         deploy:      
           steps:
           - checkout: self
-          # - script: 'deploy/k8s/helm/deploy-all.sh -externalDns aks -aksName $(aksClusterName) -aksRg $(resourceGroupName) -imageTag linux-dev -useMesh $false'
-          - script: az login --identity
+          - script: az login --service-principal --username $(servicePrincipalUserName) --tenant $(servicePrincipalTenantId) --password $CERTIFICATE_PATH
           - task: AzurePowerShell@5
             inputs:
               azureSubscription: 'Azure subscription 1(1)(bbeb73e1-c85a-4b87-934f-8bed6c3801c1)'
               ScriptType: 'InlineScript'
-              Inline: 'deploy/k8s/helm/deploy-all-mac.ps1 -externalDns aks -aksName $(aksClusterName) -aksRg $(resourceGroupName) -imageTag linux-dev -registry $(containerRegistry) -useMesh $false'
+              Inline: 'deploy/k8s/helm/deploy-all-mac.ps1 -externalDns aks -aksName $(aksClusterName) -aksRg $(resourceGroupName) -imageTag linux-dev -useMesh $false'
               FailOnStandardError: true
               azurePowerShellVersion: 'LatestVersion'
           
