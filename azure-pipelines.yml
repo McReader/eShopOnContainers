@@ -9,7 +9,6 @@ variables:
   resourceGroupName: 'tmp-2020'
   
   servicePrincipalUserName: '787362c4-2617-4e33-81db-133d1cf1bd79'
-  servicePrincipalTenantId: 'b41b72d0-4e9f-4c26-8a69-f949f367c91d'
   
   # Agent VM image name
   vmImageName: 'ubuntu-16.04'
