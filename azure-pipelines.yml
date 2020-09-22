@@ -7,9 +7,6 @@ resources:
 variables:
   aksClusterName: 'eShopOnContainers'
   resourceGroupName: 'tmp-2020'
-  
-  servicePrincipalUserName: '787362c4-2617-4e33-81db-133d1cf1bd79'
-  
   # Agent VM image name
   vmImageName: 'ubuntu-16.04'
 
@@ -27,13 +24,7 @@ stages:
         deploy:      
           steps:
           - checkout: self
-          - task: AzureKeyVault@1
-            inputs:
-              azureSubscription: 'Azure subscription 1(bbeb73e1-c85a-4b87-934f-8bed6c3801c1)'
-              KeyVaultName: 'eShopOnContainers'
-              SecretsFilter: 'eShopOnContainersPipeline'
-              RunAsPreJob: true
-          - script: az login --service-principal --username $(servicePrincipalUserName) --tenant $(service_principal_tenant_id) --password $(certificate_path)
+          - script: az login --service-principal --username $(sericePrincipalAppId) --tenant $(servicePrincipalTenantId) --password $(servicePrincipalPassword)
           - task: AzurePowerShell@5
             inputs:
               azureSubscription: 'Azure subscription 1(1)(bbeb73e1-c85a-4b87-934f-8bed6c3801c1)'
