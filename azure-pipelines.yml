@@ -34,7 +34,7 @@ stages:
               installKubectl: true
               kubectlVersion: '1.16'
           - script: kubectl apply -f ./mandatory.yaml &&
-              kubectl apply -f ./local-cm.yaml
+              kubectl apply -f ./local-cm.yaml &&
               kubectl apply -f ./local-svc.yaml
             displayName: Install NGINX Ingress Controller
             workingDirectory: 'deploy/k8s/nginx-ingress/'
