@@ -33,11 +33,11 @@ stages:
               helmVersion: '3.2.4'
               installKubectl: true
               kubectlVersion: '1.16'
-          - script: kubectl apply -f mandatory.yaml
+          - script: kubectl apply -f ./mandatory.yaml
             workingDirectory: 'deploy/k8s/helm/'
-          - script: kubectl apply -f local-cm.yaml
+          - script: kubectl apply -f ./local-cm.yaml
             workingDirectory: 'deploy/k8s/helm/'
-          - script: kubectl apply -f local-svc.yaml
+          - script: kubectl apply -f ./local-svc.yaml
             workingDirectory: 'deploy/k8s/helm/'
           - script: './deploy-all.sh --dns aks --aks-name $(aksClusterName) --aks-rg $(resourceGroupName) --namespace default --tag linux-dev'
             displayName: Helm deploy
