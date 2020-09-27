@@ -33,16 +33,12 @@ stages:
               helmVersion: '3.2.4'
               installKubectl: true
               kubectlVersion: '1.16'
-          - task: Kubernetes@1
-            inputs:
-              connectionType: 'Kubernetes Service Connection'
-              kubernetesServiceEndpoint: 'eShopOnContainers-default'
-              command: 'apply'
-              useConfigurationFile: true
-              configuration: 'mandatory.yaml'
-              arguments: '-f'
-              versionSpec: '1.16'
-              workingDirectory: 'deploy/k8s/helm/'
+          - script: kubectl apply -f mandatory.yaml
+            workingDirectory: 'deploy/k8s/helm/'
+          - script: kubectl apply -f local-cm.yaml
+            workingDirectory: 'deploy/k8s/helm/'
+          - script: kubectl apply -f local-svc.yaml
+            workingDirectory: 'deploy/k8s/helm/'
           - script: './deploy-all.sh --dns aks --aks-name $(aksClusterName) --aks-rg $(resourceGroupName) --namespace default --tag linux-dev'
             displayName: Helm deploy
             workingDirectory: 'deploy/k8s/helm/'
