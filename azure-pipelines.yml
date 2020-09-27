@@ -33,12 +33,14 @@ stages:
               helmVersion: '3.2.4'
               installKubectl: true
               kubectlVersion: '1.16'
-          - task: AzurePowerShell@5
-            inputs:
-              azureSubscription: 'Azure subscription 1(bbeb73e1-c85a-4b87-934f-8bed6c3801c1)'
-              ScriptType: 'InlineScript'
-              Inline: './deploy-all-mac.ps1 -externalDns aks -aksName $(aksClusterName) -aksRg $(resourceGroupName) -imageTag linux-dev -useMesh $false'
-              FailOnStandardError: true
-              azurePowerShellVersion: 'LatestVersion'
-              workingDirectory: 'deploy/k8s/helm/'
+          - script: './deploy-all.sh -externalDns aks -aksName $(aksClusterName) -aksRg $(resourceGroupName) -imageTag linux-dev -useMesh $false'
+            displayName: Helm deploy
+          # - task: AzurePowerShell@5
+          #   inputs:
+          #     azureSubscription: 'Azure subscription 1(bbeb73e1-c85a-4b87-934f-8bed6c3801c1)'
+          #     ScriptType: 'InlineScript'
+          #     Inline: './deploy-all-mac.ps1 -externalDns aks -aksName $(aksClusterName) -aksRg $(resourceGroupName) -imageTag linux-dev -useMesh $false'
+          #     FailOnStandardError: true
+          #     azurePowerShellVersion: 'LatestVersion'
+          #     workingDirectory: 'deploy/k8s/helm/'
           
