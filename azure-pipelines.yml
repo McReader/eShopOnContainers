@@ -28,6 +28,11 @@ stages:
             displayName: Login in Azure CLI
           - script: az aks get-credentials --resource-group $(resourceGroupName) --name $(aksClusterName)
             displayName: Configure Kubectl
+          - task: HelmInstaller@0
+            inputs:
+              helmVersion: '3.2.4'
+              installKubectl: true
+              kubectlVersion: '1.16'
           - task: AzurePowerShell@5
             inputs:
               azureSubscription: 'Azure subscription 1(bbeb73e1-c85a-4b87-934f-8bed6c3801c1)'
