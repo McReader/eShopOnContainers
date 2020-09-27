@@ -26,16 +26,12 @@ stages:
           - checkout: self
           - script: az login --service-principal --username $(sericePrincipalAppId) --tenant $(servicePrincipalTenantId) --password $(servicePrincipalPassword)
           - script: az aks get-credentials --resource-group $(resourceGroupName) --name $(aksClusterName)
-          - task: HelmInstaller@0
-            inputs:
-              helmVersion: '3.2.4'
-              installKubectl: true
-          - script: helm repo update
           - task: AzurePowerShell@5
             inputs:
               azureSubscription: 'Azure subscription 1(bbeb73e1-c85a-4b87-934f-8bed6c3801c1)'
               ScriptType: 'InlineScript'
-              Inline: 'deploy/k8s/helm/deploy-all-mac.ps1 -externalDns aks -aksName $(aksClusterName) -aksRg $(resourceGroupName) -imageTag linux-dev -useMesh $false'
+              Inline: 'deploy-all-mac.ps1 -externalDns aks -aksName $(aksClusterName) -aksRg $(resourceGroupName) -imageTag linux-dev -useMesh $false'
               FailOnStandardError: true
               azurePowerShellVersion: 'LatestVersion'
+              workingDirectory: 'deploy/k8s/helm/'
           
