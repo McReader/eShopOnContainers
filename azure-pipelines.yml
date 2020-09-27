@@ -26,6 +26,10 @@ stages:
           - checkout: self
           - script: az login --service-principal --username $(sericePrincipalAppId) --tenant $(servicePrincipalTenantId) --password $(servicePrincipalPassword)
           - script: az aks get-credentials --resource-group $(resourceGroupName) --name $(aksClusterName)
+          - task: HelmInstaller@0
+            inputs:
+              helmVersion: '3.2.4'
+              installKubectl: true
           - task: AzurePowerShell@5
             inputs:
               azureSubscription: 'Azure subscription 1(bbeb73e1-c85a-4b87-934f-8bed6c3801c1)'
