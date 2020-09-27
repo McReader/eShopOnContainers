@@ -33,7 +33,7 @@ stages:
               helmVersion: '3.2.4'
               installKubectl: true
               kubectlVersion: '1.16'
-          - script: './deploy-all.sh --dns aks --aks-name $(aksClusterName) --aks-rg $(resourceGroupName) -namespace default --tag linux-dev'
+          - script: './deploy-all.sh --dns aks --aks-name $(aksClusterName) --aks-rg $(resourceGroupName) --namespace default --tag linux-dev'
             displayName: Helm deploy
             workingDirectory: 'deploy/k8s/helm/'
           # - task: AzurePowerShell@5
