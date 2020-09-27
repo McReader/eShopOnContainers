@@ -35,6 +35,7 @@ stages:
               kubectlVersion: '1.16'
           - script: './deploy-all.sh -externalDns aks -aksName $(aksClusterName) -aksRg $(resourceGroupName) -imageTag linux-dev -useMesh $false'
             displayName: Helm deploy
+            workingDirectory: 'deploy/k8s/helm/'
           # - task: AzurePowerShell@5
           #   inputs:
           #     azureSubscription: 'Azure subscription 1(bbeb73e1-c85a-4b87-934f-8bed6c3801c1)'
