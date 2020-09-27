@@ -33,11 +33,10 @@ stages:
               helmVersion: '3.2.4'
               installKubectl: true
               kubectlVersion: '1.16'
-          - script: kubectl apply -f ./mandatory.yaml
-            workingDirectory: 'deploy/k8s/nginx-ingress/'
-          - script: kubectl apply -f ./local-cm.yaml
-            workingDirectory: 'deploy/k8s/nginx-ingress/'
-          - script: kubectl apply -f ./local-svc.yaml
+          - script: kubectl apply -f ./mandatory.yaml &&
+              kubectl apply -f ./local-cm.yaml
+              kubectl apply -f ./local-svc.yaml
+            displayName: Install NGINX Ingress Controller
             workingDirectory: 'deploy/k8s/nginx-ingress/'
           - script: './deploy-all.sh --dns aks --aks-name $(aksClusterName) --aks-rg $(resourceGroupName) --namespace default --tag linux-dev'
             displayName: Helm deploy
@@ -49,5 +48,5 @@ stages:
           #     Inline: './deploy-all-mac.ps1 -externalDns aks -aksName $(aksClusterName) -aksRg $(resourceGroupName) -imageTag linux-dev -useMesh $false'
           #     FailOnStandardError: true
           #     azurePowerShellVersion: 'LatestVersion'
-          #     workingDirectory: '
+          #     workingDirectory: 'deploy/k8s/helm/'
           
